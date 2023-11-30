@@ -1,0 +1,1 @@
+express --view=ejs youtube-downloader && cd youtube-downloader && npm install && npm install --save-dev nodemon && npm install yt-dlp && code .

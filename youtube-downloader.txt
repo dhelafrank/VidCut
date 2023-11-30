@@ -1,0 +1,33 @@
+const express = require('express');
+const { exec } = require('child_process');
+const app = express();
+const port = 3000;
+
+app.get('/downloadVideo', (req, res) => {
+  const videoUrl = 'https://www.youtube.com/watch?v=example';
+  const startTime = '00:01:30'; // specify start time
+  const endTime = '00:02:30';   // specify end time
+  const outputFileName = 'downloaded_video';
+
+  const command = `yt-dlp --output ${outputFileName}.mp4 --merge-output-format mp4 --format bestvideo+bestaudio/best --postprocessor-args "-ss ${startTime} -to ${endTime}" ${videoUrl}`;
+
+  exec(command, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error: ${error.message}`);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+
+    // Send the downloaded file to the frontend
+    res.download(`${outputFileName}.mp4`, 'downloaded_video.mp4', (err) => {
+      if (err) {
+        console.error(`Error sending file: ${err.message}`);
+        res.status(500).send('Internal Server Error');
+      }
+    });
+  });
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});
