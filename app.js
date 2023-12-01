@@ -10,7 +10,6 @@ const {
 const PORT = 3000 || process.env.PORT
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var downloadRouter= require('./routes/download')
 
 var app = express();
