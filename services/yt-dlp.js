@@ -1,29 +1,106 @@
-const {
-    exec
-} = require('child_process');
-const express = require("express")
-express()
+const fs = require('fs');
+const path = require('path');
+const ytdl = require('ytdl-core');
+const ffmpeg = require('fluent-ffmpeg');
 
-const downloadVideo = async(params, callback) =>{
+function convertTimeToSeconds(time) {
+    const [hours, minutes, seconds] = time.split(':').map(Number);
+    return hours * 3600 + minutes * 60 + seconds;
+}
+
+function logDownloadProgress(totalSize, writeStream) {
+    let downloadedSize = 0;
+
+    writeStream.on('data', (chunk) => {
+        downloadedSize += chunk.length;
+        const percentage = ((downloadedSize / totalSize) * 100).toFixed(2);
+        console.log(`Download Progress: ${percentage}%`);
+    });
+}
+
+const downloadVideo = async (params, callback) => {
+    console.log('Fetching Video to download');
     const {
         videoUrl,
         startTime,
         endTime,
         outputFileName
-    } = params
-    const command = `yt-dlp --output ${outputFileName}.mp4 --merge-output-format mp4 --format bestvideo+bestaudio/best --postprocessor-args "-ss ${startTime} -to ${endTime}" ${videoUrl}`;
+    } = params;
 
+    try {
+        const videoInfo = await ytdl.getInfo(videoUrl);
 
-    exec(command, (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Error: ${error.message}`);
-            res.status(500).send('Internal Server Error');
-            return;
-        } else {
-            callback(outputFileName)
+        const startTimeInSeconds = convertTimeToSeconds(startTime);
+        const endTimeInSeconds = convertTimeToSeconds(endTime);
+
+        const videoFormats = ytdl.filterFormats(videoInfo.formats, 'videoonly');
+        const lowestQualityFormat = videoFormats.reduce((min, format) => (format.height < min.height ? format : min), videoFormats[0]);
+
+        const videoStream = ytdl(videoUrl, {
+            format: lowestQualityFormat,
+        });
+
+        const startTimeString = new Date(startTimeInSeconds * 1000).toISOString().substr(11, 8);
+        const endTimeString = new Date(endTimeInSeconds * 1000).toISOString().substr(11, 8);
+
+        const totalSize = videoInfo.formats.find((format) => format.itag === lowestQualityFormat.itag).contentLength;
+
+        const filePath = path.join(__dirname, `${outputFileName}.mp4`);
+        const writeStream = fs.createWriteStream(filePath);
+
+        logDownloadProgress(totalSize, writeStream);
+
+        videoStream.pipe(writeStream);
+
+        writeStream.on('finish', () => {
+            console.log('Video download complete');
+
+            // Cut the video using ffmpeg
+            const ffmpegCommand = ffmpeg(filePath)
+                .setStartTime(startTimeString)
+                .setDuration(endTimeString)
+                .videoCodec('copy')
+                .audioCodec('copy')
+                .format('mp4')
+                .output(path.join(__dirname, `${outputFileName}_cut.mp4`))
+                .on('end', () => {
+                    console.log('Video cut complete');
+                    fs.unlinkSync(filePath);
+                    if (callback) {
+                        callback(`${outputFileName}_cut.mp4`);
+                    }
+                })
+                .on('error', (err) => {
+                    console.error(`Error during video cut: ${err.message}`);
+                    if (callback) {
+                        callback(null);
+                    }
+                });
+
+            ffmpegCommand.run();
+        });
+
+        videoStream.on('error', (err) => {
+            console.error(`Error during streaming: ${err.message}`);
+            if (callback) {
+                callback(null);
+            }
+        });
+
+        writeStream.on('error', (err) => {
+            console.error(`Error writing video file: ${err.message}`);
+            if (callback) {
+                callback(null);
+            }
+        });
+    } catch (err) {
+        console.error(`Error fetching video info: ${err.message}`);
+        if (callback) {
+            callback(null);
         }
-    })
+    }
+};
 
-}
-
-module.exports = {downloadVideo}
+module.exports = {
+    downloadVideo
+};
