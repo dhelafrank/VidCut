@@ -78,9 +78,9 @@ router.get("/start", (req, res) => {
         if (err) {
             res.render("error", {
                 code: 503,
-                message: err.message,
+                message: "VidCut | Viedo Not Foud",
                 error: {
-                    message: err.message
+                    message: "Video not longer available"
                 }
             });
         }
