@@ -39,20 +39,26 @@ const downloadVideo = async (params, callback) => {
 
     try {
         const videoDirectory = path.join(__dirname, '../videos');
-        await fs.promises.mkdir(videoDirectory, { recursive: true });
+        await fs.promises.mkdir(videoDirectory, {
+            recursive: true
+        });
 
         const videoInfo = await ytdl.getInfo(videoUrl);
 
         const startTimeInSeconds = convertTimeToSeconds(startTime);
         const endTimeInSeconds = convertTimeToSeconds(endTime);
 
-        const videoFormats = ytdl.filterFormats(videoInfo.formats, 'videoonly');
-        
-        const selectedFormat = selectVideoFormat(videoFormats, 'highest');
+        const videoFormats = ytdl.filterFormats(videoInfo.formats, 'videoandaudio');
+
+        const selectedFormat = selectVideoFormat(videoFormats, 'lowest');
 
         const videoStream = ytdl(videoUrl, {
             format: selectedFormat,
         });
+
+        // console.table(videoFormats.filter(format =>format.hasAudio==false))
+
+        // return
 
         const startTimeString = new Date(startTimeInSeconds * 1000).toISOString().substr(11, 8);
         const endTimeString = new Date(endTimeInSeconds * 1000).toISOString().substr(11, 8);
