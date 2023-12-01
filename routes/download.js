@@ -25,7 +25,7 @@ router.get('/request', async (req, res) => {
         res.render('info', {
             title: "VidCut | Video Processing",
             heading: "Video Processing",
-            content: `<span>Video will be processed and sent to your mail</p>
+            content: `<span>Video has been processed and sent to your mail</p>
             <div class="text-center mt-4">
             <a href="/" class="btn btn-primary">Download Another</a>
             </div>`
