@@ -13,7 +13,8 @@ router.get('/request', (req, res) => {
         endTime,
         email
     } = req.query
-    downloadParams.outputFileName = Date.now()
+    downloadParams.outputFileName = req.query.outputFileName += Date.now()
+    downloadParams.originalName = req.query.outputFileName
 
     processDownload(downloadParams)
     res.render('info', {
@@ -21,8 +22,8 @@ router.get('/request', (req, res) => {
         heading: "Video Processing",
         content: `<span>Video will be processed and sent to your mail</p>
         <div class="text-center mt-4">
-                            <a href="/" class="btn btn-primary">Back to Home</a>
-                        </div>`
+        <a href="/" class="btn btn-primary">Back to Home</a>
+        </div>`
     })
 });
 
@@ -52,7 +53,9 @@ router.get('/video', (req, res) => {
 });
 
 router.get("/start", (req, res) => {
-    const {path} = req.query
+    const {
+        path
+    } = req.query
     res.download(path, (err) => {
         if (err) {
             res.render("error", {
