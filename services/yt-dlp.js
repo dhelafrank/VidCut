@@ -45,7 +45,7 @@ const downloadVideo = async (params, callback) => {
 
         const totalSize = videoInfo.formats.find((format) => format.itag === lowestQualityFormat.itag).contentLength;
 
-        const filePath = path.join(__dirname, `${outputFileName}.mp4`);
+        const filePath = path.join(__dirname, '../videos', `${outputFileName}.mp4`);
         const writeStream = fs.createWriteStream(filePath);
 
         logDownloadProgress(totalSize, writeStream);
@@ -62,7 +62,7 @@ const downloadVideo = async (params, callback) => {
                 .videoCodec('copy')
                 .audioCodec('copy')
                 .format('mp4')
-                .output(path.join(__dirname, `${outputFileName}_cut.mp4`))
+                .output(path.join(__dirname,"../videos", `${outputFileName}_cut.mp4`))
                 .on('end', () => {
                     console.log('Video cut complete');
                     fs.unlinkSync(filePath);

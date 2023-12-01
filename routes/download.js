@@ -1,31 +1,50 @@
 const express = require('express');
 const router = express.Router();
-const { downloadVideo } = require("../services/yt-dlp");
-const path = require('path');
+const {
+    processDownload,
+    downloadFile
+} = require("../controllers/downloadManager")
 
-router.get('/download', (req, res) => {
+router.get('/request', (req, res) => {
     console.log("video download requested");
 
     const downloadParams = {
         videoUrl: 'https://www.youtube.com/watch?v=VmqjnP98wfM',
         startTime: '00:01:30',
         endTime: '00:05:00',
-        outputFileName: 'downloaded_video'
+        outputFileName: Date.now()
     };
+    processDownload(downloadParams)
+    res.send("Video will be downloaded and sent to your mail")
+});
 
-    downloadVideo(downloadParams, (videoPath) => {
-        if (videoPath) {
-            console.log(`Video path: ${videoPath}`);
-            const absolutePath = path.resolve(__dirname, '..', 'services', videoPath);
-            res.sendFile(absolutePath);
+router.get('/video', (req, res) => {
+    const {
+        token
+    } = req.query;
+
+    downloadFile(token, (result) => {
+        if (result.status) {
+            // Send the file for download
+            res.download(result.path, (err) => {
+                if (err) {
+                    console.error(`Error sending file for download: ${err.message}`);
+                }
+            });
         } else {
-            res.status(500).send('Internal Server Error');
+            res.render("error", {
+                code: 503,
+                message: result.message,
+                error: {
+                    message: result.message
+                }
+            });
         }
     });
 });
 
 router.get('/test', (req, res) => {
-res.send(req.query)
+    res.send(req.query)
 });
 
 module.exports = router;
