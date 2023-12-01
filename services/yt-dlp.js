@@ -18,6 +18,16 @@ function logDownloadProgress(totalSize, writeStream) {
     });
 }
 
+const selectVideoFormat = (formats, qualityType) => {
+    if (qualityType === 'highest') {
+        return formats.reduce((max, format) => (format.height > max.height ? format : max), formats[0]);
+    } else if (qualityType === 'lowest') {
+        return formats.reduce((min, format) => (format.height < min.height ? format : min), formats[0]);
+    } else {
+        throw new Error('Invalid quality type. Use "highest" or "lowest".');
+    }
+};
+
 const downloadVideo = async (params, callback) => {
     console.log('Fetching Video to download');
     const {
@@ -29,10 +39,7 @@ const downloadVideo = async (params, callback) => {
 
     try {
         const videoDirectory = path.join(__dirname, '../videos');
-        await fs.mkdir(videoDirectory, () => {
-            // console.log("Alert: directory made: Ln 33");
-            return
-        });
+        await fs.promises.mkdir(videoDirectory, { recursive: true });
 
         const videoInfo = await ytdl.getInfo(videoUrl);
 
@@ -40,21 +47,17 @@ const downloadVideo = async (params, callback) => {
         const endTimeInSeconds = convertTimeToSeconds(endTime);
 
         const videoFormats = ytdl.filterFormats(videoInfo.formats, 'videoonly');
-
-
-
-        const highestQualityFormat = videoFormats.reduce((max, format) => (format.height > max.height ? format : max), videoFormats[0]);
-        const videoStream = ytdl(videoUrl, {
-            format: highestQualityFormat,
-        });
         
+        const selectedFormat = selectVideoFormat(videoFormats, 'highest');
 
-
+        const videoStream = ytdl(videoUrl, {
+            format: selectedFormat,
+        });
 
         const startTimeString = new Date(startTimeInSeconds * 1000).toISOString().substr(11, 8);
         const endTimeString = new Date(endTimeInSeconds * 1000).toISOString().substr(11, 8);
         const filePath = path.join(__dirname, '../videos', `${outputFileName}.mp4`);
-        const totalSize = videoInfo.formats.find((format) => format.itag === lowestQualityFormat.itag).contentLength;
+        const totalSize = videoInfo.formats.find((format) => format.itag === selectedFormat.itag).contentLength;
         const writeStream = fs.createWriteStream(filePath);
 
         logDownloadProgress(totalSize, writeStream);
