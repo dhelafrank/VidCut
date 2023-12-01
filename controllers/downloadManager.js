@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const {
     downloadVideo
-} = require("../services/yt-dlp");
+} = require("../trash/yt-dlp");
 const {
     log
 } = require('console');
