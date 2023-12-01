@@ -42,8 +42,15 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error',{code:404});
+  res.render('error', {
+    code:404,
+    message:"Not Found",
+    error:{
+      message:"The page you seek could not be found"
+    }
+  });
 });
+
 
 app.listen(PORT, ()=>{
   console.log(`Server is now listening on port ${PORT}`);

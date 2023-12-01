@@ -28,6 +28,9 @@ const downloadVideo = async (params, callback) => {
     } = params;
 
     try {
+        const videoDirectory = path.join(__dirname, '../videos');
+        await fs.mkdir(videoDirectory, { recursive: true });
+        
         const videoInfo = await ytdl.getInfo(videoUrl);
 
         const startTimeInSeconds = convertTimeToSeconds(startTime);
@@ -43,12 +46,12 @@ const downloadVideo = async (params, callback) => {
         const startTimeString = new Date(startTimeInSeconds * 1000).toISOString().substr(11, 8);
         const endTimeString = new Date(endTimeInSeconds * 1000).toISOString().substr(11, 8);
         const filePath = path.join(__dirname, '../videos', `${outputFileName}.mp4`);
-        const totalSize = videoInfo.formats.find((format) => format.itag === lowestQualityFormat.itag).contentLength;            
+        const totalSize = videoInfo.formats.find((format) => format.itag === lowestQualityFormat.itag).contentLength;
         const writeStream = fs.createWriteStream(filePath);
 
-        // logDownloadProgress(totalSize, writeStream);
+        logDownloadProgress(totalSize, writeStream);
 
-        // videoStream.pipe(writeStream);
+        videoStream.pipe(writeStream);
 
         writeStream.on('finish', () => {
             console.log('Video download complete');

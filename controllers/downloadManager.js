@@ -16,16 +16,16 @@ const SECRET_KEY = 'your-secret-key';
 const processDownload = (downloadParams) => {
     downloadVideo(downloadParams, (videoPath) => {
         if (videoPath) {
-            console.log(`Video path: ${videoPath}`);
+            // console.log(`Video path: ${videoPath}`);
             const absolutePath = path.resolve(__dirname, '..', 'videos', videoPath);
 
             createDownloadLink(absolutePath, async (token) => {
                 let mailContent = `
-                <p>
+                <h1>
                 your video is ready, follow this <a href="https://vidcut.onrender.com/download/file?data=${token}">link</a> to download it
-                </p>
+                </h1>
                 <br>
-                <p>This link will expire in ten minutes</p>
+                <h3>This link will expire in ten minutes</h3>
                 
                 `
                 await sendMail(downloadParams.email, "VidCut File Ready", mailContent)
