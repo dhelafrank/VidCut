@@ -29,7 +29,7 @@ const downloadVideo = async (params, callback) => {
 
     try {
         const videoDirectory = path.join(__dirname, '../videos');
-        await fs.mkdir(videoDirectory,()=>{
+        await fs.mkdir(videoDirectory, () => {
             // console.log("Alert: directory made: Ln 33");
             return
         });
@@ -63,8 +63,10 @@ const downloadVideo = async (params, callback) => {
             const ffmpegCommand = ffmpeg(filePath)
                 .setStartTime(startTimeString)
                 .setDuration(endTimeString)
-                .videoCodec('copy')
-                .audioCodec('copy')
+                // .videoCodec('copy')
+                // .audioCodec('copy')
+                .videoCodec('libx264')
+                .audioCodec('aac')
                 .format('mp4')
                 .output(path.join(__dirname, "../videos", `${outputFileName}_cut.mp4`))
                 .on('end', () => {
