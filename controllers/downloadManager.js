@@ -32,7 +32,7 @@ const processDownload = (downloadParams) => {
             })
 
         } else {
-            console.log("Critical: Internal Server Error");
+            console.log("critical: Internal Server Error: Ln 35");
         }
     });
 }
