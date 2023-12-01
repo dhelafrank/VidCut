@@ -5,8 +5,9 @@ const {
     processDownload,
     downloadFile
 } = require("../controllers/downloadManager")
+const youtubeurl = require("youtube-url")
 
-router.get('/request', (req, res) => {
+router.get('/request', async (req, res) => {
     let downloadParams = {
         videoUrl,
         startTime,
@@ -16,15 +17,28 @@ router.get('/request', (req, res) => {
     downloadParams.originalName = req.query.outputFileName
     downloadParams.outputFileName = req.query.outputFileName += Date.now()
 
-    processDownload(downloadParams)
-    res.render('info', {
-        title: "VidCut | Video Processing",
-        heading: "Video Processing",
-        content: `<span>Video will be processed and sent to your mail</p>
-        <div class="text-center mt-4">
-        <a href="/" class="btn btn-primary">Back to Home</a>
-        </div>`
-    })
+    let isLinkValid = youtubeurl.valid(downloadParams.videoUrl)
+
+    if (isLinkValid) {
+        processDownload(downloadParams)
+
+        res.render('info', {
+            title: "VidCut | Video Processing",
+            heading: "Video Processing",
+            content: `<span>Video will be processed and sent to your mail</p>
+            <div class="text-center mt-4">
+            <a href="/" class="btn btn-primary">Back to Home</a>
+            </div>`
+        })   
+    }else{
+        res.render("error", {
+            code: 404,
+            message: "VidCut | Invalid Link",
+            error: {
+                message: "Video link is not a youtube link"
+            }
+        });
+    }
 });
 
 router.get('/video', (req, res) => {

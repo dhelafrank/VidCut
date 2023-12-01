@@ -20,7 +20,9 @@
     "morgan": "~1.9.1",
     "nodemailer": "^6.9.7",
     "python": "^0.0.4",
+    "url-parse": "^1.5.10",
     "youtube-dl-exec": "^2.4.17",
+    "youtube-url": "^0.5.0",
     "ytdl-core": "^4.11.5"
   },
   "devDependencies": {
