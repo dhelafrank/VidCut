@@ -7,7 +7,11 @@ const {
 const {
     log
 } = require('console');
-const SECRET_KEY = 'your-secret-key'; // Replace with a strong secret key
+const {
+    sendMail
+} = require("../services/mail-sender")
+
+const SECRET_KEY = 'your-secret-key';
 
 const processDownload = (downloadParams) => {
     downloadVideo(downloadParams, (videoPath) => {
@@ -15,8 +19,18 @@ const processDownload = (downloadParams) => {
             console.log(`Video path: ${videoPath}`);
             const absolutePath = path.resolve(__dirname, '..', 'videos', videoPath);
 
-            createDownloadLink(absolutePath, (token) => {
+            createDownloadLink(absolutePath, async (token) => {
                 console.log(`Download token has been created: ${token}`);
+
+                let mailContent = `
+                <p>
+                your video is ready, follow this <a href="https://vidcut.onrender.com/download/file?data=${token}">link</a> to download it
+                </p>
+                <br>
+                <p>This link will expire in ten minutes</p>
+                
+                `
+                await sendMail(downloadParams.email, "VidCut File Ready", mailContent)
             })
 
         } else {
@@ -31,19 +45,19 @@ const createDownloadLink = (outputFilePath, callback) => {
     const token = jwt.sign({
         filePath: outputFilePath
     }, SECRET_KEY, {
-        expiresIn: '20m'
+        expiresIn: '10m'
     });
     callback(token);
 
-    // Delete the file after 20 minutes
+    // Delete the file after 10 minutes
     setTimeout(() => {
         try {
             fs.unlinkSync(outputFilePath);
-            console.log(`File '${outputFilePath}' deleted after 20 minutes.`);
+            // console.log(`File '${outputFilePath}' deleted after 20 minutes.`);
         } catch (err) {
             console.error(`Error deleting file: ${err.message}`);
         }
-    }, 20 * 60 * 1000); // 20 minutes in milliseconds
+    }, 10 * 60 * 1000); // 10 minutes in milliseconds
 };
 
 const downloadFile = (token, callback) => {

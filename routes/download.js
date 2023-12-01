@@ -1,4 +1,5 @@
 const express = require('express');
+express().use(express.json())
 const router = express.Router();
 const {
     processDownload,
@@ -6,31 +7,38 @@ const {
 } = require("../controllers/downloadManager")
 
 router.get('/request', (req, res) => {
-    console.log("video download requested");
+    let downloadParams = {
+        videoUrl,
+        startTime,
+        endTime,
+        email
+    } = req.query
+    downloadParams.outputFileName = Date.now()
 
-    const downloadParams = {
-        videoUrl: 'https://www.youtube.com/watch?v=VmqjnP98wfM',
-        startTime: '00:01:30',
-        endTime: '00:05:00',
-        outputFileName: Date.now()
-    };
     processDownload(downloadParams)
-    res.send("Video will be downloaded and sent to your mail")
+    res.render('info', {
+        title: "VidCut | Video Processing",
+        heading: "Video Processing",
+        content: `<span>Video will be processed and sent to your mail</p>
+        <div class="text-center mt-4">
+                            <a href="/" class="btn btn-primary">Back to Home</a>
+                        </div>`
+    })
 });
 
 router.get('/video', (req, res) => {
     const {
-        token
+        data
     } = req.query;
 
-    downloadFile(token, (result) => {
+    downloadFile(data, (result) => {
         if (result.status) {
-            // Send the file for download
-            res.download(result.path, (err) => {
-                if (err) {
-                    console.error(`Error sending file for download: ${err.message}`);
-                }
-            });
+
+            res.render("info", {
+                title: "VidCut | Download Video",
+                heading: "Click the link Below to download",
+                content: `<a href="/download/start/${path}" class="btn btn-priamry">Download</a>`
+            })
         } else {
             res.render("error", {
                 code: 503,
@@ -43,8 +51,19 @@ router.get('/video', (req, res) => {
     });
 });
 
-router.get('/test', (req, res) => {
-    res.send(req.query)
-});
+router.get("/start:path", (req, res) => {
+    // Send the file for download
+    res.download(req.params.path, (err) => {
+        if (err) {
+            res.render("error", {
+                code: 503,
+                message: result.message,
+                error: {
+                    message: result.message
+                }
+            });
+        }
+    });
 
+})
 module.exports = router;
