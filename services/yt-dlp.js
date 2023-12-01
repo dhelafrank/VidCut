@@ -63,10 +63,8 @@ const downloadVideo = async (params, callback) => {
             const ffmpegCommand = ffmpeg(filePath)
                 .setStartTime(startTimeString)
                 .setDuration(endTimeString)
-                // .videoCodec('copy')
-                // .audioCodec('copy')
-                .videoCodec('libx264')
-                .audioCodec('aac')
+                .videoCodec('copy')
+                .audioCodec('copy')
                 .format('mp4')
                 .output(path.join(__dirname, "../videos", `${outputFileName}_cut.mp4`))
                 .on('end', () => {
