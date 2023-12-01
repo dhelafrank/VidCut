@@ -11,8 +11,10 @@ const createTransporter = async () => {
         const oauth2Client = new OAuth2(
             process.env.CLIENT_ID,
             process.env.CLIENT_SECRET,
-            "https://developers.google.com/oauthplayground"
+            "https://developers.google.com/oauthplayground",
+            "https://mail.google.com/"
         );
+        
 
         oauth2Client.setCredentials({
             refresh_token: process.env.REFRESH_TOKEN,

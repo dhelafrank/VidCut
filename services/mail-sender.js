@@ -3,7 +3,6 @@ const {
 } = require("./mail-transporter")
 
 const sendMail = async (address, subject, content) => {
-    console.log(`Sending Mail to ${address}`);
     try {
         const mailOptions = {
             from: process.env.USER_EMAIL,

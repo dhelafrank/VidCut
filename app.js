@@ -3,6 +3,9 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const {
+  createTransporter
+} = require("./services/mail-transporter")
 
 const PORT = 3000 || process.env.PORT
 

@@ -20,8 +20,6 @@ const processDownload = (downloadParams) => {
             const absolutePath = path.resolve(__dirname, '..', 'videos', videoPath);
 
             createDownloadLink(absolutePath, async (token) => {
-                console.log(`Download token has been created: ${token}`);
-
                 let mailContent = `
                 <p>
                 your video is ready, follow this <a href="https://vidcut.onrender.com/download/file?data=${token}">link</a> to download it
