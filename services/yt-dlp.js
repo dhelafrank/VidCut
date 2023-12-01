@@ -40,11 +40,16 @@ const downloadVideo = async (params, callback) => {
         const endTimeInSeconds = convertTimeToSeconds(endTime);
 
         const videoFormats = ytdl.filterFormats(videoInfo.formats, 'videoonly');
-        const lowestQualityFormat = videoFormats.reduce((min, format) => (format.height < min.height ? format : min), videoFormats[0]);
 
+
+
+        const highestQualityFormat = videoFormats.reduce((max, format) => (format.height > max.height ? format : max), videoFormats[0]);
         const videoStream = ytdl(videoUrl, {
-            format: lowestQualityFormat,
+            format: highestQualityFormat,
         });
+        
+
+
 
         const startTimeString = new Date(startTimeInSeconds * 1000).toISOString().substr(11, 8);
         const endTimeString = new Date(endTimeInSeconds * 1000).toISOString().substr(11, 8);
