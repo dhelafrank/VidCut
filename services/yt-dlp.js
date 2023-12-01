@@ -63,8 +63,6 @@ const downloadVideo = async (params, callback) => {
             const ffmpegCommand = ffmpeg(filePath)
                 .setStartTime(startTimeString)
                 .setDuration(endTimeString)
-                // .videoCodec('copy')
-                // .audioCodec('copy')
                 .videoCodec('libx264')
                 .audioCodec('aac')
                 .format('mp4')
