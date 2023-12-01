@@ -42,22 +42,18 @@ const downloadVideo = async (params, callback) => {
 
         const startTimeString = new Date(startTimeInSeconds * 1000).toISOString().substr(11, 8);
         const endTimeString = new Date(endTimeInSeconds * 1000).toISOString().substr(11, 8);
+
         try {
             const filePath = path.join(__dirname, '../videos', `${outputFileName}.mp4`);
         } catch (error) {
             console.log("critical: cannot acquire file path");
         }
-
-        try {
-            const totalSize = videoInfo.formats.find((format) => format.itag === lowestQualityFormat.itag).contentLength;
-            const writeStream = fs.createWriteStream(filePath);
-        } catch (error) {
-            console.log("crtical: cannot write video");
-        }
+        const totalSize = videoInfo.formats.find((format) => format.itag === lowestQualityFormat.itag).contentLength;            
+        const writeStream = fs.createWriteStream(filePath);
 
         // logDownloadProgress(totalSize, writeStream);
 
-        videoStream.pipe(writeStream);
+        // videoStream.pipe(writeStream);
 
         writeStream.on('finish', () => {
             console.log('Video download complete');
