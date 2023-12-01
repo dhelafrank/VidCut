@@ -37,7 +37,7 @@ router.get('/video', (req, res) => {
             res.render("info", {
                 title: "VidCut | Download Video",
                 heading: "Click the link Below to download",
-                content: `<a href="/download/start?${result.path}" class="btn btn-primary">Download</a>`
+                content: `<a href="/download/start?path=${result.path}" class="btn btn-primary">Download</a>`
             })
         } else {
             res.render("error", {
@@ -52,8 +52,8 @@ router.get('/video', (req, res) => {
 });
 
 router.get("/start", (req, res) => {
-    
-    res.download(req.query.path, (err) => {
+    const {path} = req.query
+    res.download(path, (err) => {
         if (err) {
             res.render("error", {
                 code: 503,
