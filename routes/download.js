@@ -27,7 +27,7 @@ router.get('/request', async (req, res) => {
             heading: "Video Processing",
             content: `<span>Video will be processed and sent to your mail</p>
             <div class="text-center mt-4">
-            <a href="/" class="btn btn-primary">Back to Home</a>
+            <a href="/" class="btn btn-primary">Download Another</a>
             </div>`
         })   
     }else{
