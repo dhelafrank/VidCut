@@ -57,9 +57,9 @@ router.get("/start", (req, res) => {
         if (err) {
             res.render("error", {
                 code: 503,
-                message: result.message,
+                message: err.message,
                 error: {
-                    message: result.message
+                    message: err.message
                 }
             });
         }
