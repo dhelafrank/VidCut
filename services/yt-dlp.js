@@ -42,13 +42,17 @@ const downloadVideo = async (params, callback) => {
 
         const startTimeString = new Date(startTimeInSeconds * 1000).toISOString().substr(11, 8);
         const endTimeString = new Date(endTimeInSeconds * 1000).toISOString().substr(11, 8);
+        try {
+            const filePath = path.join(__dirname, '../videos', `${outputFileName}.mp4`);
+        } catch (error) {
+            console.log("critical: cannot acquire file path");
+        }
 
-        const filePath = path.join(__dirname, '../videos', `${outputFileName}.mp4`);
         try {
             const totalSize = videoInfo.formats.find((format) => format.itag === lowestQualityFormat.itag).contentLength;
-            const writeStream = fs.createWriteStream(filePath);   
+            const writeStream = fs.createWriteStream(filePath);
         } catch (error) {
-         console.log("crtical: cannot write video");   
+            console.log("crtical: cannot write video");
         }
 
         // logDownloadProgress(totalSize, writeStream);
@@ -65,7 +69,7 @@ const downloadVideo = async (params, callback) => {
                 .videoCodec('copy')
                 .audioCodec('copy')
                 .format('mp4')
-                .output(path.join(__dirname,"../videos", `${outputFileName}_cut.mp4`))
+                .output(path.join(__dirname, "../videos", `${outputFileName}_cut.mp4`))
                 .on('end', () => {
                     console.log('Video cut complete');
                     fs.unlinkSync(filePath);
