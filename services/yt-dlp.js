@@ -43,12 +43,15 @@ const downloadVideo = async (params, callback) => {
         const startTimeString = new Date(startTimeInSeconds * 1000).toISOString().substr(11, 8);
         const endTimeString = new Date(endTimeInSeconds * 1000).toISOString().substr(11, 8);
 
-        const totalSize = videoInfo.formats.find((format) => format.itag === lowestQualityFormat.itag).contentLength;
-
         const filePath = path.join(__dirname, '../videos', `${outputFileName}.mp4`);
-        const writeStream = fs.createWriteStream(filePath);
+        try {
+            const totalSize = videoInfo.formats.find((format) => format.itag === lowestQualityFormat.itag).contentLength;
+            const writeStream = fs.createWriteStream(filePath);   
+        } catch (error) {
+         console.log("crtical: cannot write video");   
+        }
 
-        logDownloadProgress(totalSize, writeStream);
+        // logDownloadProgress(totalSize, writeStream);
 
         videoStream.pipe(writeStream);
 
