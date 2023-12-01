@@ -37,7 +37,7 @@ router.get('/video', (req, res) => {
             res.render("info", {
                 title: "VidCut | Download Video",
                 heading: "Click the link Below to download",
-                content: `<a href="/download/start/${path}" class="btn btn-priamry">Download</a>`
+                content: `<a href="/download/start/${result.path}" class="btn btn-priamry">Download</a>`
             })
         } else {
             res.render("error", {

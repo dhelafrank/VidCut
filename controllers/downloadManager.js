@@ -22,7 +22,7 @@ const processDownload = (downloadParams) => {
             createDownloadLink(absolutePath, async (token) => {
                 let mailContent = `
                 <h1>
-                your video is ready, follow this <a href="https://vidcut.onrender.com/download/file?data=${token}">link</a> to download it
+                your video is ready, follow this <a href="https://vidcut.onrender.com/download/video?data=${token}">link</a> to download it
                 </h1>
                 <br>
                 <h3>This link will expire in ten minutes</h3>
