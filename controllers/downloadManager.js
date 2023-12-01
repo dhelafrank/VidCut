@@ -28,7 +28,7 @@ const processDownload = (downloadParams) => {
                 <h3>This link will expire in ten minutes</h3>
                 
                 `
-                await sendMail(downloadParams.email, "VidCut File Ready", mailContent)
+                await sendMail(downloadParams.email, "VidCut Video Ready", mailContent)
             })
 
         } else {

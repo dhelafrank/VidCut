@@ -13,8 +13,8 @@ router.get('/request', (req, res) => {
         endTime,
         email
     } = req.query
-    downloadParams.outputFileName = req.query.outputFileName += Date.now()
     downloadParams.originalName = req.query.outputFileName
+    downloadParams.outputFileName = req.query.outputFileName += Date.now()
 
     processDownload(downloadParams)
     res.render('info', {
