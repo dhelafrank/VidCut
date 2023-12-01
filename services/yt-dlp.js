@@ -80,12 +80,12 @@ const downloadVideo = async (params, callback) => {
                 .videoCodec('copy')
                 .audioCodec('copy')
                 .format('mp4')
-                .output(path.join(__dirname, "../videos", `${outputFileName}_cut.mp4`))
+                .output(path.join(__dirname, "../videos", `${outputFileName}_VidCut.mp4`))
                 .on('end', () => {
                     console.log('Video cut complete');
                     fs.unlinkSync(filePath);
                     if (callback) {
-                        callback(`${outputFileName}_cut.mp4`);
+                        callback(`${outputFileName}_VidCut.mp4`);
                     }
                 })
                 .on('error', (err) => {
