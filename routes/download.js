@@ -52,7 +52,7 @@ router.get('/video', (req, res) => {
 });
 
 router.get("/start", (req, res) => {
-    // Send the file for download
+    
     res.download(req.query.path, (err) => {
         if (err) {
             res.render("error", {
