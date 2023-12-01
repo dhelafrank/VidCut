@@ -42,3 +42,21 @@ body {
     border-color: #0056b3;
     color: #ffffff;
 }
+.vidcut {
+    color: transparent;
+    background: linear-gradient(to right, #ff3366, #66ff66, #3366ff);
+    background-clip: text;
+    -moz-background-clip: text;
+    -webkit-background-clip: text;
+    background-size: 200% 100%;
+    animation: gradientAnimation 5s linear infinite;
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 100% 0;
+    }
+    100% {
+        background-position: -100% 0;
+    }
+}

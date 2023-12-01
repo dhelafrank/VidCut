@@ -12,12 +12,12 @@
 <body>
 
     <div class="dark-mode-form">
-        <h2 class="text-center text-white mb-4"><%=title%></h2>
+        <h2 class="text-center vidcut mb-4"><%=title%></h2>
         <p class="text-center text-muted mb-4">Fill out the apropriate input field</p>
         <form class="dark-mode-inputs" method="get" action="/download/request">
             <input class="form-control dark-mode-input mb-2" placeholder="Video URL" aria-label="Video URL" name="videoUrl">
-            <input class="form-control dark-mode-input mb-2" placeholder="Start Time (hh:mm:ss):" aria-label="Start Time" name="startTime">
-            <input class="form-control dark-mode-input mb-2" placeholder="End Time (hh:mm:ss):" aria-label="End Time" name="endTime">
+            <input class="form-control dark-mode-input mb-2" placeholder="Start Time (hh:mm:ss)" aria-label="Start Time" name="startTime">
+            <input class="form-control dark-mode-input mb-2" placeholder="End Time (hh:mm:ss)" aria-label="End Time" name="endTime">
             <input class="form-control dark-mode-input mb-2" placeholder="Output File Name" aria-label="Output File Name" name="outputFileName">
             <input class="form-control dark-mode-input mb-2" placeholder="Email Address" aria-label="Email Address" name="email">
             <button class="btn dark-mode-button btn-block mt-4" type="submit">
@@ -29,7 +29,7 @@
                 </svg>
             </button>
         </form>
-        <p class="text-center mt-3 text-info">Note: This tool only processe videos from youtube</p>
+        <p class="text-center mt-3 text-info">Note: This tool only processes videos from youtube links</p>
     </div>
 
     
