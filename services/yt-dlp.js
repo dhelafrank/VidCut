@@ -29,8 +29,11 @@ const downloadVideo = async (params, callback) => {
 
     try {
         const videoDirectory = path.join(__dirname, '../videos');
-        await fs.mkdir(videoDirectory, { recursive: true });
-        
+        await fs.mkdir(videoDirectory,()=>{
+            // console.log("Alert: directory made: Ln 33");
+            return
+        });
+
         const videoInfo = await ytdl.getInfo(videoUrl);
 
         const startTimeInSeconds = convertTimeToSeconds(startTime);
