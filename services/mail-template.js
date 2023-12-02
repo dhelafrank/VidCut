@@ -48,9 +48,9 @@ const videoReminderMail = (name, url) => {
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   </head>
   <body style="background-color: #f3f4f6; display: flex; align-items: center; justify-content: center; height: 100vh;">
-    <div style="max-width: 600px; padding: 20px; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+    <div style="max-width: 600px; padding: 20px;">
       <h1 style="text-align:center">VidCut</h1>
-      <div style="background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); display:flex; flex-direction:column; align-items:center; justify-content:center;">
+      <div style="background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); display:grid; place-items:center ">
         <h1 style="font-size: 24px; margin-bottom: 10px; color: #333;">Your ${name} video is ready</h1>
         <h5 style="color: #047857; font-size: 18px;">Click the button below to download</h5>
         <hr style="border-top: 1px solid #e2e8f0;">
