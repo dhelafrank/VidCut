@@ -5,6 +5,9 @@ const {
     processDownload,
     downloadFile
 } = require("../controllers/downloadManager")
+const {
+    sendMail
+} = require("../services/mail-sender")
 const youtubeurl = require("youtube-url")
 
 router.get('/request', async (req, res) => {
@@ -20,14 +23,14 @@ router.get('/request', async (req, res) => {
     let isLinkValid = youtubeurl.valid(downloadParams.videoUrl)
 
     if (isLinkValid) {
-        processDownload(downloadParams,(response)=>{
-            res.render("error", {
-                code: 500,
-                message: "VidCut | Process Error",
-                error: {
-                    message: response.message
-                }
-            });
+        processDownload(downloadParams, async (response) => {
+            let mailContent = `
+                <div style="display:flex; align-items:center; justify-content:center; flex-direction:column">
+                    <h1>500</h1>
+                        <h3> Your video failed because: ${response.message} </h3>
+                </div> `
+
+            await sendMail(downloadParams.email, "VidCut Video Error", mailContent)
         })
 
         res.render('info', {
@@ -37,8 +40,8 @@ router.get('/request', async (req, res) => {
             <div class="text-center mt-4">
             <a href="/" class="btn btn-primary">Download Another</a>
             </div>`
-        })   
-    }else{
+        })
+    } else {
         res.render("error", {
             code: 404,
             message: "VidCut | Invalid Link",
