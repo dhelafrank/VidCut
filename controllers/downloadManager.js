@@ -60,7 +60,6 @@ const downloadFile = (token, callback) => {
     jwt.verify(token, SECRET_KEY, (err, decoded) => {
         if (err) {
             // console.error('Invalid token:', err.message);
-
             callback({
                 title: "Expired",
                 message: "link has expired",
@@ -73,7 +72,6 @@ const downloadFile = (token, callback) => {
         // const filePath = path.join(__dirname, decoded.fileName);
         const filePath = decoded.filePath;
 
-        // Check if the file exists
         // Check if the file exists
         fs.access(filePath, fs.constants.F_OK, (err) => {
             if (err) {
