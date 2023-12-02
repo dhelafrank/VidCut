@@ -13,7 +13,7 @@ const {
 
 const SECRET_KEY = 'your-secret-key';
 
-const processDownload = (downloadParams, callback) => {
+const processDownload = (downloadParams, routeCallback) => {
     downloadVideo(downloadParams, (response) => {
         if (response.status) {
             // console.log(`Video path: ${videoPath}`);
@@ -33,7 +33,7 @@ const processDownload = (downloadParams, callback) => {
 
         } else {
             console.log("critical: Internal Server Error: Ln 35");
-            callback(params)
+            routeCallback(response)
         }
     });
 }
