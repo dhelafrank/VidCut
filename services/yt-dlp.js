@@ -86,8 +86,8 @@ const downloadVideo = async (params, callback) => {
                     fs.unlinkSync(filePath);
                     if (callback) {
                         callback({
-                            state: false,
-                            message: err,
+                            state: true,
+                            message: "Process Success",
                             path: `${outputFileName}_VidCut.mp4`
                         });
                     }
