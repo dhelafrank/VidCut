@@ -10,6 +10,10 @@ const {
 const {
     sendMail
 } = require("../services/mail-sender")
+const {
+    videoReminderMail
+} = require("../services/mail-template")
+
 
 const SECRET_KEY = 'your-secret-key';
 
@@ -20,15 +24,7 @@ const processDownload = (downloadParams, routeCallback) => {
             const absolutePath = path.resolve(__dirname, '..', 'videos', response.path);
 
             createDownloadLink(absolutePath, async (token) => {
-                let mailContent = `
-                <h1>
-                your ${downloadParams.originalName} video is ready, follow this <a href="https://vidcut.onrender.com/download/video?data=${token}">link</a> to download it
-                </h1>
-                <br>
-                <h3>This link will expire in ten minutes</h3>
-                
-                `
-                await sendMail(downloadParams.email, "VidCut Video Ready", mailContent)
+                await sendMail(downloadParams.email, "VidCut Video Ready", videoReminderMail(downloadParams.originalName), `https://vidcut.onrender.com/download/video?data=${token}`)
             })
 
         } else {

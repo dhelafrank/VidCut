@@ -8,6 +8,9 @@ const {
 const {
     sendMail
 } = require("../services/mail-sender")
+const {
+    errorMail
+} = require("../services/mail-template")
 const youtubeurl = require("youtube-url")
 
 router.get('/request', async (req, res) => {
@@ -24,13 +27,7 @@ router.get('/request', async (req, res) => {
 
     if (isLinkValid) {
         processDownload(downloadParams, async (response) => {
-            let mailContent = `
-                <div style="display:flex; align-items:center; justify-content:center; flex-direction:column; width:100vw; height:50vh">
-                    <h1>500</h1>
-                    <h3> Your video failed because: ${response.message} </h3>
-                </div> `
-
-            await sendMail(downloadParams.email, "VidCut Video Error", mailContent)
+            await sendMail(downloadParams.email, "VidCut Video Error", errorMail(500, "Video Processing Failed", response.message))
         })
 
         res.render('info', {
