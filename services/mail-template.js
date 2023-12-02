@@ -61,7 +61,7 @@ return `<html>
           </p>
         </div>
         <hr>
-        <a class="btn btn-priamry" href="${url}" target="_blank">Download</a>
+        <a class="btn btn-primary" href="${url}" target="_blank">Download</a>
       </div>
     </div>
   </div>
