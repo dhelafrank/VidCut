@@ -24,7 +24,7 @@ const processDownload = (downloadParams, routeCallback) => {
             const absolutePath = path.resolve(__dirname, '..', 'videos', response.path);
 
             createDownloadLink(absolutePath, async (token) => {
-                await sendMail(downloadParams.email, "VidCut Video Ready", videoReminderMail(downloadParams.originalName), `https://vidcut.onrender.com/download/video?data=${token}`)
+                await sendMail(downloadParams.email, "VidCut Video Ready", videoReminderMail(downloadParams.originalName,  `https://vidcut.onrender.com/download/video?data=${token}`))
             })
 
         } else {

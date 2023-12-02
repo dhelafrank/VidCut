@@ -54,7 +54,7 @@ return `<html>
         <hr>
         <div class="space-y-3">
            <p class="text-gray-700">
-            Your ${name} is ready
+            Your ${name} video is ready
           </p>
           <p class="text-gray-700">
             Thank you for using our service
