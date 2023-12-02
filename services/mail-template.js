@@ -1,3 +1,13 @@
+let vidcutGradientText = `
+<h1 class="text-center" style=" color: transparent;
+background: linear-gradient(to right, #ff3366, #66ff66, #3366ff);
+background-clip: text;
+-moz-background-clip: text;
+-webkit-background-clip: text;
+background-size: 200% 100%;
+animation: gradientAnimation 5s linear infinite;">VidCut</h1>
+`   
+
 const errorMail = (code, heading, message) => {
   return `
     <html>
@@ -32,8 +42,8 @@ const errorMail = (code, heading, message) => {
 
 
 
-const videoReminderMail = (name, url) =>{
-return `<html>
+const videoReminderMail = (name, url) => {
+  return `<html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <style>
@@ -41,8 +51,9 @@ return `<html>
   </style>
 </head>
 <body style="font-family: 'Poppins', sans-serif; background-color: #f3f4f6;">
-  <div style="margin: 0 auto; max-width: 600px; padding: 20px;">
-    <div style="background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+  <div style="margin: 0 auto; max-width: 600px; padding: 20px; display:flex; align-items:center; justify-content:center; flex-direction:column;">
+  ${vidcutGradientText}
+    <div style="background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); display:flex; align-items:center; justify-content:center; flex-direction:column;">
       <h1 style="font-size: 24px; margin-bottom: 10px; color: #333;">Your ${name} video is ready</h1>
       <h5 style="color: #047857; font-size: 18px;">Click the button below to download</h5>
       <hr style="border-top: 1px solid #e2e8f0;">
@@ -62,4 +73,7 @@ return `<html>
 </html>`
 }
 
-module.exports = {errorMail, videoReminderMail}
+module.exports = {
+  errorMail,
+  videoReminderMail
+}

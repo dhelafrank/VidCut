@@ -42,7 +42,7 @@ body {
     border-color: #0056b3;
     color: #ffffff;
 }
-.dwonload-button-container{
+.download-button-container{
     display: flex;
     align-items: center;
     justify-content: center;
