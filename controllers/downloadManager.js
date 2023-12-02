@@ -15,7 +15,7 @@ const SECRET_KEY = 'your-secret-key';
 
 const processDownload = (downloadParams, routeCallback) => {
     downloadVideo(downloadParams, (response) => {
-        if (response.status) {
+        if (response.state) {
             // console.log(`Video path: ${videoPath}`);
             const absolutePath = path.resolve(__dirname, '..', 'videos', response.path);
 
