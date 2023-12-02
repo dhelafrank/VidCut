@@ -3,7 +3,10 @@ const errorMail = (code, heading, message)=>{
     <head>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
       <style>
-         /* Add custom classes and styles that you want inlined here */
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+      body{
+      font-family:'Poppins', sans-serif
+      }
       </style>
     </head>
     <body class="bg-light">
@@ -66,4 +69,4 @@ return `<html>
 </html>`
 }
 
-module.exports = {error, videoReminder}
+module.exports = {errorMail, videoReminderMail}
