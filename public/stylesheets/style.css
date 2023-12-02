@@ -42,6 +42,11 @@ body {
     border-color: #0056b3;
     color: #ffffff;
 }
+.dwonload-button-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .vidcut {
     color: transparent;
     background: linear-gradient(to right, #ff3366, #66ff66, #3366ff);
