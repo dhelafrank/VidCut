@@ -8,9 +8,7 @@ const sendMail = async (address, subject, content) => {
             from: process.env.USER_EMAIL,
             to: address,
             subject: subject,
-            html: {
-                content: content
-            },
+            html: content
         }
 
         let emailTransporter = await createTransporter();
