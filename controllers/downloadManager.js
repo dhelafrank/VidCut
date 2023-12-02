@@ -13,11 +13,11 @@ const {
 
 const SECRET_KEY = 'your-secret-key';
 
-const processDownload = (downloadParams) => {
-    downloadVideo(downloadParams, (videoPath) => {
-        if (videoPath) {
+const processDownload = (downloadParams, callback) => {
+    downloadVideo(downloadParams, (response) => {
+        if (response.status) {
             // console.log(`Video path: ${videoPath}`);
-            const absolutePath = path.resolve(__dirname, '..', 'videos', videoPath);
+            const absolutePath = path.resolve(__dirname, '..', 'videos', response.path);
 
             createDownloadLink(absolutePath, async (token) => {
                 let mailContent = `
@@ -33,6 +33,7 @@ const processDownload = (downloadParams) => {
 
         } else {
             console.log("critical: Internal Server Error: Ln 35");
+            callback(reponse)
         }
     });
 }

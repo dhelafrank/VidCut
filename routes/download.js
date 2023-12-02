@@ -20,7 +20,15 @@ router.get('/request', async (req, res) => {
     let isLinkValid = youtubeurl.valid(downloadParams.videoUrl)
 
     if (isLinkValid) {
-        processDownload(downloadParams)
+        processDownload(downloadParams,(response)=>{
+            res.render("error", {
+                code: 500,
+                message: "VidCut | Process Error",
+                error: {
+                    message: response.message
+                }
+            });
+        })
 
         res.render('info', {
             title: "VidCut | Video Processing",

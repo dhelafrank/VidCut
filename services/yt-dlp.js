@@ -85,13 +85,21 @@ const downloadVideo = async (params, callback) => {
                     console.log('Video cut complete');
                     fs.unlinkSync(filePath);
                     if (callback) {
-                        callback(`${outputFileName}_VidCut.mp4`);
+                        callback({
+                            state: false,
+                            message: err,
+                            path: `${outputFileName}_VidCut.mp4`
+                        });
                     }
                 })
                 .on('error', (err) => {
                     console.error(`Error during video cut: ${err.message}`);
                     if (callback) {
-                        callback(null);
+                        callback({
+                            state: false,
+                            message: err,
+                            path: null
+                        });
                     }
                 });
 
@@ -101,20 +109,33 @@ const downloadVideo = async (params, callback) => {
         videoStream.on('error', (err) => {
             console.error(`Error during streaming: ${err.message}`);
             if (callback) {
-                callback(null);
+
+                callback({
+                    state: false,
+                    message: err,
+                    path: null
+                });
             }
         });
 
         writeStream.on('error', (err) => {
             console.error(`Error writing video file: ${err.message}`);
             if (callback) {
-                callback(null);
+                callback({
+                    state: false,
+                    message: err,
+                    path: null
+                });
             }
         });
     } catch (err) {
         console.error(`Error fetching video info: ${err.message}`);
         if (callback) {
-            callback(null);
+            callback({
+                state: false,
+                message: err,
+                path: null
+            });
         }
     }
 };
